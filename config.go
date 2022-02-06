@@ -18,7 +18,6 @@ type Config struct {
 	cookiePath string // path to cookie file
 	outputPath string // path to output dir
 
-	verbose bool
 	timeout time.Duration
 }
 
@@ -34,7 +33,6 @@ func (cfg *Config) bindFlags(fs *flag.FlagSet) {
 	fs.Var(&cfg.to, "to", "Last payslip to fetch (YYYY-MM) [required]")
 	fs.StringVar(&cfg.cookiePath, "cookie", "hilan.cookie", "Path to cookie file")
 	fs.StringVar(&cfg.outputPath, "out", "getlush_out/", "Directory path for fetched pdfs")
-	fs.BoolVar(&cfg.verbose, "v", false, "Run in verbose mode")
 	fs.DurationVar(&cfg.timeout, "t", 10*time.Second, "Single request timeout")
 }
 

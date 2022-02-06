@@ -12,7 +12,7 @@ Batch downloader for payslips from Hilan.
     - Save the value to a file, e.g. `hilan.cookie`.
 
 2. Run `getlush` with your details - for example:  
-    `$ ./bin/getlush -emp 123123123 -from 2015-01 -to 2022-01 -v`
+    `$ ./bin/getlush -emp 123123123 -from 2015-01 -to 2022-01`
 
 
 ### Config
@@ -36,5 +36,5 @@ Usage of ./getlush:
         Last payslip to fetch (YYYY-MM) [required]
   -url string
         Hilan's base URL (default "https://traiana.net.hilan.co.il/")
-  -v    Run in verbose mode
+
 ```

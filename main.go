@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -12,9 +11,6 @@ import (
 )
 
 func main() {
-	// setup
-	log.SetFlags(log.Ldate | log.Ltime)
-
 	// parse flags
 	var cfg Config
 	cfg.bindFlags(flag.CommandLine)
@@ -28,11 +24,11 @@ func main() {
 	// init i/o
 	cookie, err := readCookie(cfg.cookiePath)
 	if err != nil {
-		fmt.Printf("could not read cookie file: %v", err)
+		fmt.Println("could not read cookie file:", err)
 		os.Exit(1)
 	}
 	if err := os.MkdirAll(cfg.outputPath, os.ModePerm); err != nil {
-		fmt.Printf("could not verify output directory: %v", err)
+		fmt.Println("could not verify output directory:", err)
 		os.Exit(1)
 	}
 
@@ -43,27 +39,23 @@ func main() {
 	// start running for each month
 	for cur := cfg.from.Time; cfg.to.After(cur); cur = cur.AddDate(0, 1, 0) {
 		id := cur.Format(hilanDateFmtYYYYMM) // request/file id
+		fmt.Printf(">> %s... ", id)
 		req, err := requestFn(cur)
 		if err != nil {
-			log.Printf("ERROR: failed to create request %s: %v", id, err)
+			fmt.Printf("× [failed to create request: %v]\n", err)
 			continue
-		}
-		if cfg.verbose {
-			log.Println("DEBUG: getting", req.URL.String())
 		}
 		data, err := doRequest(client, req)
 		if err != nil {
-			log.Printf("ERROR: failed to fetch payslip %s: %v", id, err)
+			fmt.Printf("× [failed to fetch payslip: %v]\n", err)
 			continue
 		}
 		file := filepath.Join(cfg.outputPath, fmt.Sprintf("payslip_%s.pdf", id))
-		if cfg.verbose {
-			log.Printf("DEBUG: writing %s [~%dK]", file, len(data)/1e3)
-		}
 		if err := ioutil.WriteFile(file, data, os.ModePerm); err != nil {
-			log.Printf("ERROR: failed to write payslip %s: %v", id, err)
+			fmt.Printf("× [failed to write payslip: %v]\n", err)
 			continue
 		}
+		fmt.Printf("✓ [~%dK]\n", len(data)/1e3)
 	}
 }
 
