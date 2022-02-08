@@ -34,13 +34,13 @@ func main() {
 
 	// common http stuff
 	client := &http.Client{Timeout: cfg.timeout}
-	requestFn := makeRequestFn(cfg, cookie)
 
-	// start running for each month
+	// payslips for each month
+	payslipFn := requestFnPayslip(cfg, cookie)
 	for cur := cfg.from.Time; cfg.to.After(cur); cur = cur.AddDate(0, 1, 0) {
 		id := cur.Format(hilanDateFmtYYYYMM) // request/file id
 		fmt.Printf(">> %s... ", id)
-		req, err := requestFn(cur)
+		req, err := payslipFn(cur)
 		if err != nil {
 			fmt.Printf("× [failed to create request: %v]\n", err)
 			continue
@@ -53,6 +53,29 @@ func main() {
 		file := filepath.Join(cfg.outputPath, fmt.Sprintf("payslip_%s.pdf", id))
 		if err := ioutil.WriteFile(file, data, os.ModePerm); err != nil {
 			fmt.Printf("× [failed to write payslip: %v]\n", err)
+			continue
+		}
+		fmt.Printf("✓ [~%dK]\n", len(data)/1e3)
+	}
+
+	// 106 forms for each year
+	f106Fn := requestFn106(cfg, cookie)
+	for cur := cfg.from.Time; cfg.to.After(cur); cur = cur.AddDate(1, 0, 0) {
+		id := cur.Format(hilanDateFmtYYYY) // request/file id
+		fmt.Printf(">> 106-%s...", id)
+		req, err := f106Fn(cur)
+		if err != nil {
+			fmt.Printf("× [failed to create request: %v]\n", err)
+			continue
+		}
+		data, err := doRequest(client, req)
+		if err != nil {
+			fmt.Printf("× [failed to fetch 106 form: %v]\n", err)
+			continue
+		}
+		file := filepath.Join(cfg.outputPath, fmt.Sprintf("form106_%s.pdf", id))
+		if err := ioutil.WriteFile(file, data, os.ModePerm); err != nil {
+			fmt.Printf("× [failed to write 106 form: %v]\n", err)
 			continue
 		}
 		fmt.Printf("✓ [~%dK]\n", len(data)/1e3)

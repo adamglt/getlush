@@ -51,7 +51,7 @@ func (cfg Config) validate() error {
 }
 
 const (
-	// for some reason we need both
+	hilanDateFmtYYYY     = "2006"
 	hilanDateFmtYYYYMM   = "2006-01"
 	hilanDateFmtDDMMYYYY = "02/01/2006"
 )
