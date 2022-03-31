@@ -93,5 +93,5 @@ func readCookie(path string) (string, error) {
 	if strings.HasPrefix(s, copyPrefix) {
 		s = strings.TrimPrefix(s, copyPrefix)
 	}
-	return s, nil
+	return strings.TrimSpace(s), nil
 }
