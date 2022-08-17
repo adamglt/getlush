@@ -37,7 +37,7 @@ func main() {
 
 	// payslips for each month
 	payslipFn := requestFnPayslip(cfg, cookie)
-	for cur := cfg.from.Time; cfg.to.After(cur); cur = cur.AddDate(0, 1, 0) {
+	for cur := cfg.from.Time; cfg.to.BeforeOrEqual(&cur); cur = cur.AddDate(0, 1, 0) {
 		id := cur.Format(hilanDateFmtYYYYMM) // request/file id
 		fmt.Printf(">> %s... ", id)
 		req, err := payslipFn(cur)

@@ -73,3 +73,8 @@ func (h *hilanDate) Set(s string) error {
 	h.Time = t
 	return nil
 }
+
+// BeforeOrEqual t time is before or equal to h hilanDate , aka h is inclusive upper limit
+func (h *hilanDate) BeforeOrEqual(t *time.Time) bool {
+	return t.Before(h.Time) || t.Equal(h.Time)
+}
