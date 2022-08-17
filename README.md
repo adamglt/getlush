@@ -9,10 +9,12 @@ Batch downloader for payslips from Hilan.
     - Login to Hilan as you normally would and view your latest payslip.
     - Find a request that looks like `PaySlip2022-01.pdf?Date=01/01/2022&UserId=12341231231`.
     - Go to `Request Headers` on the bottom right and copy the `Cookie` header.
-    - Save the value to a file, e.g. `hilan.cookie`.
+    - Save the value to a file, e.g. `hilan.cookie` under `bin` directory.
 
-2. Run `getlush` with your details - for example:  
-    `$ ./bin/getlush -emp 123123123 -from 2015-01 -to 2022-01`
+2. Create executable file by running `make`
+
+3. Run `getlush` with your details - for example:  
+    `$ ./bin/getlush -emp 209935777 -from 2015-01 -to 2022-01`
 
 
 ### Config
@@ -23,7 +25,7 @@ Usage of ./getlush:
   -cookie string
         Path to cookie file (default "hilan.cookie")
   -emp string
-        Employee ID [required]
+        Employee ID number (not userid) [required]
   -from value
         First payslip to fetch (YYYY-MM) [required]
   -org string

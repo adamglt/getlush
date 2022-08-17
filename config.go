@@ -28,7 +28,7 @@ func (cfg *Config) bindFlags(fs *flag.FlagSet) {
 	)
 	fs.StringVar(&cfg.url, "url", traianaURL, "Hilan's base URL")
 	fs.StringVar(&cfg.org, "org", traianaOrgID, "Parent organization ID")
-	fs.StringVar(&cfg.emp, "emp", "", "Employee ID [required]")
+	fs.StringVar(&cfg.emp, "emp", "", "Employee ID number (not userid) [required]")
 	fs.Var(&cfg.from, "from", "First payslip to fetch (YYYY-MM) [required]")
 	fs.Var(&cfg.to, "to", "Last payslip to fetch (YYYY-MM) [required]")
 	fs.StringVar(&cfg.cookiePath, "cookie", "hilan.cookie", "Path to cookie file")
