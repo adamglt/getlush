@@ -25,7 +25,7 @@ Usage of ./getlush:
   -cookie string
         Path to cookie file (default "hilan.cookie")
   -emp string
-        Employee citizenship ID number (not userid) [required]
+        Employee citizenship ID number [required]
   -from value
         First payslip to fetch (YYYY-MM) [required]
   -org string
